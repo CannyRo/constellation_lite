@@ -5,6 +5,7 @@ const errorMiddleware = require('./middleware/errorMiddleware')
 
 const authRoutes = require('./routes/authRoutes')
 const projectRoutes = require('./routes/projectRoutes')
+const pledgeRoutes = require('./routes/pledgeRoutes')
 
 const app = express()
 
@@ -17,6 +18,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes)
 app.use('/api/projects', projectRoutes)
+app.use('/api/pledges', pledgeRoutes)
+
 
 app.use(errorMiddleware)
 

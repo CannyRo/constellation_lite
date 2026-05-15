@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
+import axios from 'axios'
 
 function ProjectDetailsPage() {
   const { id } = useParams()
@@ -8,6 +9,57 @@ function ProjectDetailsPage() {
   const [project, setProject] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+
+  const { user, token } = useContext(AuthContext)
+
+  const [pledgeData, setPledgeData] = useState({
+    amount: '',
+    message: '',
+  })
+
+  const [pledgeSuccess, setPledgeSuccess] = useState('')
+  const [pledgeError, setPledgeError] = useState('')
+
+  const handlePledgeChange = (event) => {
+  setPledgeData({
+    ...pledgeData,
+    [event.target.name]: event.target.value,
+  })
+}
+
+  const handlePledgeSubmit = async (event) => {
+    event.preventDefault()
+
+    setPledgeSuccess('')
+    setPledgeError('')
+
+    try {
+      await axios.post(
+        'http://localhost:5000/api/pledges',
+        {
+          project: id,
+          amount: Number(pledgeData.amount),
+          message: pledgeData.message,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      setPledgeSuccess('Pledge created successfully')
+      setPledgeData({
+        amount: '',
+        message: '',
+      })
+    } catch (error) {
+      setPledgeError(
+        error.response?.data?.message ||
+          'Failed to create pledge'
+      )
+    }
+  }
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -62,6 +114,37 @@ function ProjectDetailsPage() {
         alt={project.title}
         width="300"
       />
+      {user ? (
+        <section>
+          <h3>Support this project</h3>
+
+          <form onSubmit={handlePledgeSubmit}>
+            <input
+              type="number"
+              name="amount"
+              placeholder="Amount"
+              value={pledgeData.amount}
+              onChange={handlePledgeChange}
+            />
+
+            <textarea
+              name="message"
+              placeholder="Message optional"
+              value={pledgeData.message}
+              onChange={handlePledgeChange}
+            />
+
+            <button type="submit">
+              Create pledge
+            </button>
+          </form>
+
+          {pledgeSuccess && <p>{pledgeSuccess}</p>}
+          {pledgeError && <p>{pledgeError}</p>}
+        </section>
+      ) : (
+        <p>Please log in to support this project.</p>
+      )}
     </div>
   )
 }
