@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
+import ProtectedRoute from './components/ProtectedRoute'
+
 import MainLayout from './layouts/MainLayout'
 
 import HomePage from './pages/HomePage'
@@ -21,8 +23,18 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="projects/:id" element={<ProjectDetailsPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="admin" element={<AdminPage />} />
+          <Route path="profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } />
+          <Route path="admin"
+            element={
+              <ProtectedRoute>
+                <AdminPage />
+              </ProtectedRoute>
+            } />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
