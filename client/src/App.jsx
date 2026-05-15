@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import ProtectedRoute from './components/ProtectedRoute'
+import AdminRoute from './components/AdminRoute'
 
 import MainLayout from './layouts/MainLayout'
 
@@ -9,6 +10,8 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ProjectsPage from './pages/ProjectsPage'
 import ProjectDetailsPage from './pages/ProjectDetailsPage'
+import NewProjectPage from './pages/NewProjectPage'
+import EditProjectPage from './pages/EditProjectPage'
 import ProfilePage from './pages/ProfilePage'
 import AdminPage from './pages/AdminPage'
 import NotFoundPage from './pages/NotFoundPage'
@@ -31,10 +34,26 @@ function App() {
             } />
           <Route path="admin"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <AdminPage />
-              </ProtectedRoute>
+              </AdminRoute>
             } />
+          <Route
+            path="admin/projects/new"
+            element={
+              <AdminRoute>
+                <NewProjectPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="admin/projects/:id/edit"
+            element={
+              <AdminRoute>
+                <EditProjectPage />
+              </AdminRoute>
+            }
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
