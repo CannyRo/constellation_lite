@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
-import axios from 'axios'
+import api from '../services/api'
+
+import styles from './ProjectDetailsPage.module.css'
 
 function ProjectDetailsPage() {
   const { id } = useParams()
@@ -34,8 +36,8 @@ function ProjectDetailsPage() {
     setPledgeError('')
 
     try {
-      await axios.post(
-        'http://localhost:5000/api/pledges',
+      await api.post(
+        '/pledges',
         {
           project: id,
           amount: Number(pledgeData.amount),
@@ -64,8 +66,8 @@ function ProjectDetailsPage() {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/projects/${id}`
+        const response = await api.get(
+          `/projects/${id}`
         )
 
         setProject(response.data)
@@ -88,64 +90,128 @@ function ProjectDetailsPage() {
   }
 
   return (
-    <div>
-      <h2>{project.title}</h2>
+    <main className={styles.page}>
+      <Link
+        to="/projects"
+        className={styles.backLink}
+      >
+        ← Back to projects
+      </Link>
 
-      <p>{project.description}</p>
-
-      <p>
-        <strong>Organization:</strong>{' '}
-        {project.organization}
-      </p>
-
-      <p>
-        <strong>Category:</strong>{' '}
-        {project.category}
-      </p>
-
-      <p>
-        <strong>Location:</strong>{' '}
-        {project.country} -{' '}
-        {project.continent}
-      </p>
-
-      <img
-        src={project.imageUrl}
-        alt={project.title}
-        width="300"
-      />
-      {user ? (
-        <section>
-          <h3>Support this project</h3>
-
-          <form onSubmit={handlePledgeSubmit}>
-            <input
-              type="number"
-              name="amount"
-              placeholder="Amount"
-              value={pledgeData.amount}
-              onChange={handlePledgeChange}
-            />
-
-            <textarea
-              name="message"
-              placeholder="Message optional"
-              value={pledgeData.message}
-              onChange={handlePledgeChange}
-            />
-
-            <button type="submit">
-              Create pledge
-            </button>
-          </form>
-
-          {pledgeSuccess && <p>{pledgeSuccess}</p>}
-          {pledgeError && <p>{pledgeError}</p>}
-        </section>
-      ) : (
-        <p>Please log in to support this project.</p>
+      {project.imageUrl && (
+        <img
+          src={project.imageUrl}
+          alt={project.title}
+          className={styles.heroImage}
+        />
       )}
-    </div>
+
+      <div className={styles.meta}>
+        <span className="badge">
+          <span className="star"></span>
+          {project.category}
+        </span>
+
+        <span className="badge">
+          {project.continent}
+        </span>
+
+        <span className="badge">
+          {project.country}
+        </span>
+      </div>
+
+      <h1 className={styles.title}>
+        {project.title}
+      </h1>
+
+      <p className={styles.description}>
+        {project.description}
+      </p>
+
+      <section
+        className={`card ${styles.infoCard}`}
+      >
+        <p className={styles.infoLabel}>
+          Organization
+        </p>
+
+        <p className={styles.organization}>
+          {project.organization}
+        </p>
+      </section>
+
+      <section>
+        <h2 className={styles.sectionTitle}>
+          Support this project
+        </h2>
+
+        {user ? (
+          <div
+            className={`card ${styles.pledgeCard}`}
+          >
+            <form
+              onSubmit={handlePledgeSubmit}
+              className={styles.form}
+            >
+              <div className="form-group">
+                <label>Amount</label>
+
+                <input
+                  type="number"
+                  name="amount"
+                  placeholder="50"
+                  value={pledgeData.amount}
+                  onChange={handlePledgeChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Message</label>
+
+                <textarea
+                  name="message"
+                  placeholder="Write a message..."
+                  value={pledgeData.message}
+                  onChange={handlePledgeChange}
+                />
+              </div>
+
+              <div className={styles.actions}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  Create pledge
+                </button>
+              </div>
+
+              {pledgeSuccess && (
+                <p className="feedback-success">
+                  {pledgeSuccess}
+                </p>
+              )}
+
+              {pledgeError && (
+                <p className="feedback-error">
+                  {pledgeError}
+                </p>
+              )}
+            </form>
+          </div>
+        ) : (
+          <div className="card">
+            <div style={{ padding: '2rem' }}>
+              <p className={styles.loginMessage}>
+                Please log in to support this
+                project and become part of the
+                constellation.
+              </p>
+            </div>
+          </div>
+        )}
+      </section>
+    </main>
   )
 }
 

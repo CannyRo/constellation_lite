@@ -1,7 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
-
+import { Link } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
+
+import api from '../services/api'
+
+import styles from './ProfilePage.module.css'
 
 function ProfilePage() {
   const { user, token } = useContext(AuthContext)
@@ -13,8 +16,8 @@ function ProfilePage() {
   useEffect(() => {
     const fetchPledges = async () => {
       try {
-        const response = await axios.get(
-          'http://localhost:5000/api/pledges/me',
+        const response = await api.get(
+          '/pledges/me',
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -43,8 +46,8 @@ function ProfilePage() {
     }
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/pledges/${pledgeId}`,
+      await api.delete(
+        `/pledges/${pledgeId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,10 +58,7 @@ function ProfilePage() {
       setPledges(
         pledges.map((pledge) =>
           pledge._id === pledgeId
-            ? {
-                ...pledge,
-                status: 'cancelled',
-              }
+            ? { ...pledge, status: 'cancelled' }
             : pledge
         )
       )
@@ -68,65 +68,119 @@ function ProfilePage() {
   }
 
   if (loading) {
-    return <p>Loading profile...</p>
+    return (
+      <main className="page">
+        <p>Loading profile...</p>
+      </main>
+    )
   }
 
   return (
-    <div>
-      <h2>Profile</h2>
+    <main className="page">
+      <div className={styles.header}>
+        <div>
+          <p className="badge">
+            <span className="star"></span>
+            Your constellation
+          </p>
 
-      <section>
-        <h3>User information</h3>
+          <h1 className="page-title">
+            Profile
+          </h1>
 
-        <p>
-          <strong>Username:</strong> {user.username}
-        </p>
+          <p className="page-subtitle">
+            Follow the projects you chose to support and keep track of the lights you added to the sky.
+          </p>
+        </div>
 
-        <p>
-          <strong>Email:</strong> {user.email}
-        </p>
+        <Link to="/projects" className="btn btn-secondary">
+          Discover projects
+        </Link>
+      </div>
+
+      <section className={`card ${styles.userCard}`}>
+        <div className={styles.userGrid}>
+          <div>
+            <p className={styles.label}>Username</p>
+            <p className={styles.value}>{user.username}</p>
+          </div>
+
+          <div>
+            <p className={styles.label}>Email</p>
+            <p className={styles.value}>{user.email}</p>
+          </div>
+        </div>
       </section>
 
       <section>
-        <h3>My pledges</h3>
+        <h2 className={styles.sectionTitle}>
+          My pledges
+        </h2>
 
-        {error && <p>{error}</p>}
+        {error && (
+          <p className="feedback-error">
+            {error}
+          </p>
+        )}
 
         {pledges.length === 0 ? (
-          <p>No pledges yet.</p>
+          <div className={`card ${styles.empty}`}>
+            <p>
+              You have not created any pledge yet. Explore current projects and choose the first star you want to light.
+            </p>
+          </div>
         ) : (
-          pledges.map((pledge) => (
-            <div key={pledge._id}>
-              <h4>{pledge.project.title}</h4>
+          <div className={styles.pledgesGrid}>
+            {pledges.map((pledge) => (
+              <article
+                key={pledge._id}
+                className={`card ${styles.pledgeCard} ${
+                  pledge.status === 'cancelled'
+                    ? styles.cancelled
+                    : ''
+                }`}
+              >
+                <div className={styles.pledgeTop}>
+                  <div>
+                    <p className="badge">
+                      {pledge.status}
+                    </p>
 
-              <p>
-                <strong>Amount:</strong> {pledge.amount} €
-              </p>
+                    <h3 className={styles.pledgeTitle}>
+                      {pledge.project?.title}
+                    </h3>
+                  </div>
 
-              {pledge.message && (
-                <p>
-                  <strong>Message:</strong> {pledge.message}
-                </p>
-              )}
+                  <p className={styles.amount}>
+                    {pledge.amount} €
+                  </p>
+                </div>
 
-              <p>
-                <strong>Status:</strong> {pledge.status}
-              </p>
-              {pledge.status !== 'cancelled' && (
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleDeletePledge(pledge._id)
-                  }
-                >
-                  Cancel pledge
-                </button>
-              )}
-            </div>
-          ))
+                {pledge.message && (
+                  <p className={styles.message}>
+                    “{pledge.message}”
+                  </p>
+                )}
+
+                {pledge.status !== 'cancelled' && (
+                  <div className={styles.actions}>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() =>
+                        handleDeletePledge(pledge._id)
+                      }
+                    >
+                      Cancel pledge
+                    </button>
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
         )}
       </section>
-    </div>
+    </main>
   )
 }
 

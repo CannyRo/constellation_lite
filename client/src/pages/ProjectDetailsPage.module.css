@@ -1,0 +1,134 @@
+.page {
+  width: min(920px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: var(--space-10) 0;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+
+  margin-bottom: var(--space-6);
+
+  color: var(--color-text-tertiary);
+  text-decoration: none;
+
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  transition: color var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--color-accent-light);
+}
+
+.heroImage {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+
+  border-radius: var(--radius-lg);
+
+  margin-bottom: var(--space-8);
+
+  border: 1px solid var(--color-border-primary);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+
+  margin-bottom: var(--space-5);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+
+  margin-bottom: var(--space-5);
+}
+
+.description {
+  color: var(--color-text-secondary);
+
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.9;
+
+  margin-bottom: var(--space-8);
+}
+
+.infoCard {
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.infoLabel {
+  color: var(--color-text-tertiary);
+
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  margin-bottom: var(--space-2);
+}
+
+.organization {
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+}
+
+.sectionTitle {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+
+  margin-bottom: var(--space-5);
+}
+
+.pledgeCard {
+  padding: var(--space-6);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.loginMessage {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.loading {
+  padding: var(--space-12) 0;
+  text-align: center;
+  color: var(--color-text-tertiary);
+}
+
+@media (max-width: 720px) {
+  .heroImage {
+    height: 260px;
+  }
+
+  .title {
+    letter-spacing: 0.03em;
+  }
+}

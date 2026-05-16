@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
 import { Link } from 'react-router-dom'
-
 import { AuthContext } from '../context/AuthContext'
+
+import api from '../services/api'
+
+import styles from './AdminDashboard.module.css'
 
 function AdminPage() {
   const { token } = useContext(AuthContext)
@@ -13,10 +15,7 @@ function AdminPage() {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(
-        'http://localhost:5000/api/projects'
-      )
-
+      const response = await api.get('/projects')
       setProjects(response.data)
     } catch (error) {
       setError('Failed to load projects')
@@ -39,9 +38,7 @@ function AdminPage() {
     }
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/projects/${projectId}`,
-        {
+      await api.delete(`/projects/${projectId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -66,48 +63,108 @@ function AdminPage() {
   }
 
   return (
-    <div>
-      <h2>Admin Dashboard</h2>
+    <main className="page">
+      <div className={styles.header}>
+        <div>
+          <p className="badge">
+            <span className="star"></span>
+            Administration
+          </p>
 
-      <Link to="/admin/projects/new">
-        Create new project
-      </Link>
+          <h1 className="page-title">
+            Admin dashboard
+          </h1>
 
-      {error && <p>{error}</p>}
+          <p className="page-subtitle">
+            Manage humanitarian initiatives, update project information and curate the constellation.
+          </p>
+        </div>
+
+        <div className={styles.toolbar}>
+          <Link
+            to="/admin/projects/new"
+            className="btn btn-primary"
+          >
+            Create project
+          </Link>
+        </div>
+      </div>
+
+      {error && (
+        <p className="feedback-error">
+          {error}
+        </p>
+      )}
 
       {projects.length === 0 ? (
-        <p>No projects found.</p>
+        <div className={`card ${styles.empty}`}>
+          <p>No projects found.</p>
+        </div>
       ) : (
-        <div>
-          {projects.map((project) => (
-            <div key={project._id}>
-              <h3>{project.title}</h3>
+        <div className={`card ${styles.tableWrapper}`}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Category</th>
+                <th>Country</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
 
-              <p>{project.organization}</p>
+            <tbody>
+              {projects.map((project) => (
+                <tr key={project._id}>
+                  <td>
+                    <h2 className={styles.projectTitle}>
+                      {project.title}
+                    </h2>
 
-              <Link to={`/projects/${project._id}`}>
-                View
-              </Link>
+                    <p className={styles.organization}>
+                      {project.organization}
+                    </p>
+                  </td>
 
-              {' | '}
+                  <td>{project.category}</td>
 
-              <Link to={`/admin/projects/${project._id}/edit`}>
-                Edit
-              </Link>
+                  <td>{project.country}</td>
 
-              {' | '}
+                  <td>
+                    <span
+                      className={`badge ${styles.status}`}
+                    >
+                      {project.status}
+                    </span>
+                  </td>
 
-              <button
-                type="button"
-                onClick={() => handleDelete(project._id)}
-              >
-                Delete
-              </button>
-            </div>
-          ))}
+                  <td>
+                    <div className={styles.actions}>
+                      <Link
+                        to={`/admin/projects/${project._id}/edit`}
+                        className="btn btn-secondary"
+                      >
+                        Edit
+                      </Link>
+
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() =>
+                          handleDelete(project._id)
+                        }
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
-    </div>
+    </main>
   )
 }
 

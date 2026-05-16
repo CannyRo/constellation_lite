@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import api from '../services/api'
+
+import styles from './AuthPage.module.css'
 
 function RegisterPage() {
   const navigate = useNavigate()
@@ -26,8 +28,8 @@ function RegisterPage() {
     setError('')
 
     try {
-      await axios.post(
-        'http://localhost:5000/api/auth/register',
+      await api.post(
+        '/auth/register',
         formData
       )
 
@@ -41,58 +43,74 @@ function RegisterPage() {
   }
 
   return (
-    <div>
-      <h2>Register</h2>
+    <div className={styles.wrapper}>
+      <div className={`card ${styles.card}`}>
+        <div className={styles.inner}>
+          <p className={`badge ${styles.badge}`}>
+            <span className="star"></span>
+            Join the constellation
+          </p>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">
-            Username
-          </label>
+          <h1 className={styles.title}>
+            Create your account
+          </h1>
 
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
+          <p className={styles.subtitle}>
+            Start supporting meaningful causes and let every pledge become a new light in the sky.
+          </p>
+
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className="form-group">
+              <label>Username</label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className={styles.actions}>
+              <button type="submit" className="btn btn-primary">
+                Create account
+              </button>
+
+              {error && (
+                <p className="feedback-error">
+                  {error}
+                </p>
+              )}
+            </div>
+          </form>
+
+          <p className={styles.footer}>
+            Already have an account?{' '}
+            <Link to="/login">
+              Login
+            </Link>
+          </p>
         </div>
-
-        <div>
-          <label htmlFor="email">
-            Email
-          </label>
-
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="password">
-            Password
-          </label>
-
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-
-        <button type="submit">
-          Create account
-        </button>
-      </form>
-
-      {error && <p>{error}</p>}
+      </div>
     </div>
   )
 }

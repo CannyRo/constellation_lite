@@ -1,0 +1,124 @@
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.card:hover,
+.card:focus-within {
+  transform: translateY(-3px);
+  border-color: var(--color-accent-light);
+}
+
+.image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-badge),
+    var(--color-bg-card)
+  );
+}
+
+.body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex: 1;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+
+  color: var(--color-text-tertiary);
+
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent-light);
+  margin-right: var(--space-2);
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.description {
+  color: var(--color-text-secondary);
+  font-weight: 300;
+  line-height: 1.65;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  flex: 1;
+}
+
+.organization {
+  color: var(--color-text-tertiary);
+  font-size: 0.9rem;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.cta {
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.cta:hover {
+  border-color: var(--color-accent-light);
+  color: var(--color-accent-light);
+}
+
+@media (max-width: 640px) {
+  .footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

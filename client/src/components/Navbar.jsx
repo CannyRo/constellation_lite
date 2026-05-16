@@ -3,47 +3,84 @@ import { Link, NavLink } from 'react-router-dom'
 
 import { AuthContext } from '../context/AuthContext'
 
+import styles from './Navbar.module.css'
+
 function Navbar() {
   const { user, logout } = useContext(AuthContext)
 
   return (
-    <nav>
-      <Link to="/">
-        Constellation Lite
-      </Link>
+    <header className={styles.wrapper}>
+      <div className={styles.container}>
+        <div className={styles.left}>
+          <Link
+            to="/"
+            className={styles.logo}
+          >
+            Constellation
+          </Link>
 
-      <div>
-        <NavLink to="/projects">
-          Projects
-        </NavLink>
+          <nav className={styles.nav}>
+            <Link
+              to="/projects"
+              className={styles.link}
+            >
+              Projects
+            </Link>
 
-        {user ? (
-          <>
-            <NavLink to="/profile">
-              Profile
-            </NavLink>
+            {user && (
+              <Link
+                to="/profile"
+                className={styles.link}
+              >
+                Profile
+              </Link>
+            )}
 
-            <NavLink to="/admin">
-              Admin
-            </NavLink>
+            {user?.role === 'admin' && (
+              <Link
+                to="/admin"
+                className={styles.link}
+              >
+                Admin
+              </Link>
+            )}
+          </nav>
+        </div>
 
-            <button type="button" onClick={logout}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <NavLink to="/login">
-              Login
-            </NavLink>
+        <div className={styles.right}>
+          {user ? (
+            <>
+              <span className={styles.user}>
+                {user.username}
+              </span>
 
-            <NavLink to="/register">
-              Register
-            </NavLink>
-          </>
-        )}
+              <button
+                onClick={logout}
+                className={styles.signout}
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className={styles.link}
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className={styles.link}
+              >
+                Register
+              </Link>
+            </>
+          )}
+        </div>
       </div>
-    </nav>
+    </header>
   )
 }
 

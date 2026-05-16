@@ -1,0 +1,99 @@
+.wrapper {
+  min-height: calc(100vh - 78px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--space-8) 1rem;
+}
+
+.card {
+  width: min(520px, 100%);
+
+  padding: var(--space-10);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(155, 127, 232, 0.08),
+      transparent 34%
+    );
+
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+}
+
+.badge {
+  margin-bottom: var(--space-5);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+
+  margin-bottom: var(--space-4);
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+
+  line-height: 1.8;
+  font-weight: 300;
+
+  margin-bottom: var(--space-8);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  margin-top: var(--space-2);
+}
+
+.footer {
+  color: var(--color-text-tertiary);
+
+  font-size: 0.92rem;
+  text-align: center;
+
+  margin-top: var(--space-6);
+}
+
+.footer a {
+  color: var(--color-accent-light);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: var(--space-6);
+  }
+}

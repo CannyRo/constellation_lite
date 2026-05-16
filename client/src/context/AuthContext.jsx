@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../services/api'
 
 export const AuthContext = createContext()
 
@@ -8,9 +8,9 @@ function AuthProvider({ children }) {
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  // Restore user session on app startup
   useEffect(() => {
     const storedToken = localStorage.getItem('token')
-
     if (storedToken) {
       fetchCurrentUser(storedToken)
     } else {
@@ -18,11 +18,10 @@ function AuthProvider({ children }) {
     }
   }, [])
 
+  // Fetch authenticated user from backend using stored JWT
   const fetchCurrentUser = async (authToken) => {
     try {
-      const response = await axios.get(
-        'http://localhost:5000/api/auth/me',
-        {
+      const response = await api.get('/auth/me', {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -38,9 +37,9 @@ function AuthProvider({ children }) {
     }
   }
 
+  // Authenticate user and store JWT locally
   const login = async (email, password) => {
-    const response = await axios.post(
-      'http://localhost:5000/api/auth/login',
+    const response = await api.post('/auth/login',
       {
         email,
         password,
@@ -55,6 +54,7 @@ function AuthProvider({ children }) {
     setUser(response.data.user)
   }
 
+  // Clear local session
   const logout = () => {
     localStorage.removeItem('token')
 

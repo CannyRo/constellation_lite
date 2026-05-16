@@ -1,0 +1,137 @@
+.hero {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 7rem 0 5rem;
+
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-10);
+  align-items: center;
+}
+
+.kicker {
+  margin-bottom: var(--space-5);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: 0.14em;
+
+  margin-bottom: var(--space-5);
+}
+
+.subtitle {
+  max-width: 620px;
+
+  color: var(--color-text-secondary);
+  font-size: 1.08rem;
+  font-weight: 300;
+  line-height: 1.9;
+
+  margin-bottom: var(--space-8);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.visual {
+  min-height: 420px;
+
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(155, 127, 232, 0.18), transparent 32%),
+    var(--color-bg-secondary);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.visual::before,
+.visual::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: var(--color-star);
+  box-shadow:
+    0 0 20px rgba(245, 200, 66, 0.6),
+    80px 40px 0 rgba(155, 127, 232, 0.7),
+    -90px 110px 0 rgba(155, 127, 232, 0.55),
+    130px -90px 0 rgba(245, 200, 66, 0.55),
+    -130px -70px 0 rgba(232, 224, 255, 0.5);
+}
+
+.visual::before {
+  width: 8px;
+  height: 8px;
+  top: 42%;
+  left: 48%;
+}
+
+.visual::after {
+  width: 4px;
+  height: 4px;
+  top: 22%;
+  left: 62%;
+}
+
+.orbit {
+  position: absolute;
+  inset: 16%;
+  border: 1px solid rgba(155, 127, 232, 0.25);
+  border-radius: 50%;
+}
+
+.orbitTwo {
+  position: absolute;
+  inset: 26%;
+  border: 1px solid rgba(245, 200, 66, 0.16);
+  border-radius: 50%;
+}
+
+.panel {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto var(--space-12);
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.feature {
+  padding: var(--space-6);
+}
+
+.feature h2 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 300;
+  margin-bottom: var(--space-3);
+}
+
+.feature p {
+  color: var(--color-text-secondary);
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+@media (max-width: 880px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: var(--space-10);
+  }
+
+  .visual {
+    min-height: 300px;
+  }
+
+  .panel {
+    grid-template-columns: 1fr;
+  }
+}

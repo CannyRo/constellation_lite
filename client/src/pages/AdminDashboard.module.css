@@ -1,0 +1,90 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-5);
+
+  margin-bottom: var(--space-8);
+}
+
+.toolbar {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.table thead {
+  border-bottom: 1px solid var(--color-border-primary);
+}
+
+.table th {
+  text-align: left;
+
+  padding: var(--space-4);
+
+  color: var(--color-text-tertiary);
+
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.table td {
+  padding: var(--space-5) var(--space-4);
+  border-bottom: 1px solid rgba(42, 33, 69, 0.55);
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  transition: background var(--transition-fast);
+}
+
+.table tbody tr:hover {
+  background: rgba(30, 22, 64, 0.22);
+}
+
+.projectTitle {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.organization {
+  color: var(--color-text-secondary);
+  font-size: 0.92rem;
+  margin-top: var(--space-2);
+}
+
+.status {
+  width: fit-content;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.empty {
+  padding: var(--space-8);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+@media (max-width: 720px) {
+  .header {
+    flex-direction: column;
+  }
+}
